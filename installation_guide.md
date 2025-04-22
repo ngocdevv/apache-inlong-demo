@@ -14,15 +14,13 @@ Before installing Apache InLong, ensure your system meets the following requirem
 Our demo project uses a simplified version of Apache InLong implemented with Docker Compose and Python components. Follow these steps to install:
 
 1. **Clone the Repository**
-
    ```bash
    git clone <repository-url>
-   cd inlong-demo
+   cd apache-inlong-demo
    ```
 
 2. **Check System Compatibility**
-
-   For Apple Silicon Macs (M1/M2), the Docker Compose file is already configured with platform-specific images:
+   For Apple Silicon Macs (M1/M2/M3/M4), the Docker Compose file is already configured with platform-specific images:
 
    ```yaml
    # Example from docker-compose.yml
@@ -30,8 +28,6 @@ Our demo project uses a simplified version of Apache InLong implemented with Doc
      image: confluentinc/cp-zookeeper:7.3.2
      platform: linux/arm64  # For Apple Silicon compatibility
    ```
-
-   For other platforms, you may remove the `platform` specification if needed.
 
 ## Configuring Docker Compose
 The `docker-compose.yml` file defines the following services:
