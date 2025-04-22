@@ -1,0 +1,100 @@
+# Apache InLong Demo Project .gitignore
+
+# Docker volumes and data
+data/*
+!data/.gitkeep
+
+# Elasticsearch data
+es-data/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Local configuration files
+.env
+*.local
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Kafka data
+kafka-data/
+
+# Zookeeper data
+zookeeper-data/
+
+# Node modules (if any frontend components are added)
+node_modules/
+npm-debug.log
+
+# Compiled Java classes (if any)
+*.class
+
+# Package files (if any)
+*.jar
+*.war
+*.ear
+
+# Maven (if used)
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# Jupyter Notebooks (if used for data analysis)
+.ipynb_checkpoints/
+
+# Test coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover

@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  # Zookeeper - required for Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.2
+    platform: linux/arm64
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - inlong-network
+
+  # Kafka - message broker
+  kafka:
+    image: confluentinc/cp-kafka:7.3.2
+    platform: linux/arm64
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    depends_on:
+      - zookeeper
+    networks:
+      - inlong-network
+
+  # Elasticsearch - data storage and visualization
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - inlong-network
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+
+  # Kibana - visualization for Elasticsearch
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.14.0
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - inlong-network
+
+  # InLong Agent - simulated with Python
+  inlong-agent:
+    build:
+      context: ./inlong-agent
+    volumes:
+      - ./data:/data
+    depends_on:
+      - dataproxy
+    networks:
+      - inlong-network
+
+  # DataProxy - simulated with Python
+  dataproxy:
+    build:
+      context: ./dataproxy
+    depends_on:
+      - kafka
+    networks:
+      - inlong-network
+
+  # InLong Sort - simulated with Python
+  inlong-sort:
+    build:
+      context: ./inlong-sort
+    depends_on:
+      - kafka
+      - elasticsearch
+    networks:
+      - inlong-network
+
+  # User behavior data generator
+  user-behavior-generator:
+    build:
+      context: ./user-behavior
+    volumes:
+      - ./data:/data
+    networks:
+      - inlong-network
+
+networks:
+  inlong-network:
+    driver: bridge
+
+volumes:
+  es-data:
