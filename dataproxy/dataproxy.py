@@ -15,7 +15,6 @@ app = Flask(__name__)
 
 # Initialize Kafka producer with retry logic
 def get_kafka_producer():
-    """Create and return a Kafka producer with retry logic"""
     for _ in range(30):  # Try for 5 minutes (30 * 10 seconds)
         try:
             producer = KafkaProducer(
@@ -38,12 +37,10 @@ kafka_producer = None
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    """Health check endpoint"""
     return jsonify({"status": "healthy"}), 200
 
 @app.route('/api/data', methods=['POST'])
 def receive_data():
-    """Endpoint to receive data from InLong Agent"""
     global kafka_producer
     
     # Initialize Kafka producer if not already initialized

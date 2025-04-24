@@ -38,6 +38,7 @@ services:
     environment:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ENTERPRISE_SEARCH_HOST=http://app-search:3002
     ports:
       - "9200:9200"
       - "9300:9300"

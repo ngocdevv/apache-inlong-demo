@@ -33,7 +33,6 @@ ES_PORT = 9200
 ES_INDEX = 'user_behavior'
 
 def wait_for_kafka():
-    """Wait for Kafka to be available"""
     logger.info("Waiting for Kafka to be available...")
     while True:
         try:
@@ -50,7 +49,6 @@ def wait_for_kafka():
             time.sleep(5)
 
 def wait_for_elasticsearch():
-    """Wait for Elasticsearch to be available"""
     logger.info("Waiting for Elasticsearch to be available...")
     while True:
         try:
@@ -63,7 +61,6 @@ def wait_for_elasticsearch():
             time.sleep(5)
 
 def create_elasticsearch_index():
-    """Create Elasticsearch index with mapping"""
     es = Elasticsearch([f"http://{ES_HOST}:{ES_PORT}"])
     
     # Define index mapping
@@ -105,7 +102,6 @@ def create_elasticsearch_index():
         logger.info(f"Elasticsearch index {ES_INDEX} already exists")
 
 def process_and_enrich(event):
-    """Process and enrich the event data"""
     # Add processing timestamp
     event['processed_at'] = datetime.now().isoformat()
     
@@ -122,7 +118,6 @@ def process_and_enrich(event):
     return event
 
 def consume_and_process():
-    """Consume messages from Kafka, process them, and load into Elasticsearch"""
     # Initialize Kafka consumer
     consumer = KafkaConsumer(
         KAFKA_TOPIC,
@@ -169,7 +164,6 @@ def consume_and_process():
         consumer.close()
 
 def bulk_index_to_elasticsearch(es, events):
-    """Bulk index events to Elasticsearch"""
     if not events:
         return
     

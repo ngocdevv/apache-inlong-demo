@@ -16,7 +16,6 @@ from watchdog.events import FileSystemEventHandler
 DATAPROXY_URL = "http://dataproxy:5000/api/data"
 
 class NewFileHandler(FileSystemEventHandler):
-    """Handler for new file events in the data directory"""
     
     def on_created(self, event):
         """Handle file creation events"""
@@ -31,7 +30,6 @@ class NewFileHandler(FileSystemEventHandler):
         self.process_file(event.src_path)
     
     def process_file(self, file_path):
-        """Process a new data file and send to DataProxy"""
         try:
             # Wait a bit to ensure file is completely written
             time.sleep(1)
@@ -59,7 +57,6 @@ class NewFileHandler(FileSystemEventHandler):
             print(f"Error processing file {file_path}: {str(e)}")
 
 def main():
-    """Main function to monitor the data directory"""
     print("Starting InLong Agent...")
     
     # Path to monitor
